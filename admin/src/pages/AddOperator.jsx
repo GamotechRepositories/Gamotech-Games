@@ -254,6 +254,31 @@ function AddOperator() {
                 className={inputClass}
               />
             </div>
+            <div>
+              <label className={labelClass}>API Key</label>
+              <input
+                type="text"
+                readOnly
+                value=""
+                placeholder="Auto-generated on save"
+                className={readOnlyClass}
+              />
+            </div>
+            <div className="lg:col-span-2">
+              <label className={labelClass}>AWS Secret Path</label>
+              <input
+                type="text"
+                readOnly
+                value={
+                  form.operatorId ? `gamotech/operators/${form.operatorId}` : ''
+                }
+                placeholder="Auto-generated from operator ID"
+                className={readOnlyClass}
+              />
+              <p className="text-xs text-slate-400 mt-1">
+                Stored in MongoDB; secret value saved in AWS at this path
+              </p>
+            </div>
           </div>
         </div>
 

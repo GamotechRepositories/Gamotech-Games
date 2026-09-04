@@ -1,5 +1,11 @@
 import crypto from 'crypto'
 import Operator from '../model/operator.js'
+import {
+  deleteOperatorApiSecret,
+  getOperatorApiSecret,
+  getOperatorSecretName,
+  storeOperatorApiSecret,
+} from '../services/operatorSecretStore.js'
 
 const handleError = (res, error, statusCode = 500) => {
   const code = error.code === 11000 ? 409 : statusCode
@@ -11,6 +17,15 @@ const handleError = (res, error, statusCode = 500) => {
 
 const generateApiKey = () => crypto.randomBytes(16).toString('hex')
 const generateApiSecret = () => crypto.randomBytes(32).toString('hex')
+
+const attachApiSecret = async (operator, apiSecret = null) => {
+  const doc = operator.toObject ? operator.toObject() : { ...operator }
+  const secretPath =
+    doc.apiSecretPath || getOperatorSecretName(doc.operatorId)
+  doc.apiSecret =
+    apiSecret ?? (await getOperatorApiSecret(secretPath)) ?? ''
+  return doc
+}
 
 const nameToOperatorIdBase = (name) =>
   name
@@ -41,20 +56,31 @@ const generateOperatorId = async (name, excludeId = null) => {
 
 export const createOperator = async (req, res) => {
   try {
-    const operatorId =
-      req.body.operatorId || (await generateOperatorId(req.body.name))
+    const { apiSecret: _apiSecret, apiKey: bodyApiKey, apiSecretPath: _path, ...body } =
+      req.body
+    const operatorId = body.operatorId || (await generateOperatorId(body.name))
+    const apiKey = bodyApiKey || generateApiKey()
+    const apiSecret = generateApiSecret()
+    const apiSecretPath = getOperatorSecretName(operatorId)
 
     const operator = await Operator.create({
-      ...req.body,
+      ...body,
       operatorId,
-      apiKey: req.body.apiKey || generateApiKey(),
-      apiSecret: req.body.apiSecret || generateApiSecret(),
+      apiKey,
+      apiSecretPath,
     })
+
+    try {
+      await storeOperatorApiSecret(operatorId, apiSecret)
+    } catch (error) {
+      await Operator.findByIdAndDelete(operator._id)
+      throw error
+    }
 
     res.status(201).json({
       success: true,
       message: 'Operator created successfully',
-      operator,
+      operator: await attachApiSecret(operator, apiSecret),
     })
   } catch (error) {
     handleError(res, error, 400)
@@ -96,7 +122,7 @@ export const getOperatorById = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      operator,
+      operator: await attachApiSecret(operator),
     })
   } catch (error) {
     handleError(res, error, 400)
@@ -105,7 +131,13 @@ export const getOperatorById = async (req, res) => {
 
 export const updateOperator = async (req, res) => {
   try {
-    const { apiSecret, operatorId: _operatorId, ...updates } = req.body
+    const {
+      apiSecret,
+      apiKey: _apiKey,
+      operatorId: _operatorId,
+      apiSecretPath: _apiSecretPath,
+      ...updates
+    } = req.body
 
     const existing = await Operator.findById(req.params.id)
     if (!existing) {
@@ -119,6 +151,12 @@ export const updateOperator = async (req, res) => {
       updates.operatorId = await generateOperatorId(
         updates.name || existing.name,
         existing._id
+      )
+    }
+
+    if (!existing.apiSecretPath) {
+      updates.apiSecretPath = getOperatorSecretName(
+        updates.operatorId || existing.operatorId
       )
     }
 
@@ -137,7 +175,7 @@ export const updateOperator = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Operator updated successfully',
-      operator,
+      operator: await attachApiSecret(operator),
     })
   } catch (error) {
     handleError(res, error, 400)
@@ -146,13 +184,18 @@ export const updateOperator = async (req, res) => {
 
 export const deleteOperator = async (req, res) => {
   try {
-    const operator = await Operator.findByIdAndDelete(req.params.id)
+    const operator = await Operator.findById(req.params.id)
     if (!operator) {
       return res.status(404).json({
         success: false,
         message: 'Operator not found',
       })
     }
+
+    await deleteOperatorApiSecret(
+      operator.apiSecretPath || operator.operatorId
+    )
+    await Operator.findByIdAndDelete(req.params.id)
 
     res.status(200).json({
       success: true,

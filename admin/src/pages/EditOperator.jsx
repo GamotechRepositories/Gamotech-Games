@@ -46,6 +46,11 @@ function EditOperator() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [form, setForm] = useState(null)
+  const [credentials, setCredentials] = useState({
+    apiKey: '',
+    apiSecret: '',
+    apiSecretPath: '',
+  })
   const [games, setGames] = useState([])
   const [fetching, setFetching] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -60,6 +65,11 @@ function EditOperator() {
           getGames(),
         ])
         setForm(operatorToForm(operatorRes.data.operator))
+        setCredentials({
+          apiKey: operatorRes.data.operator.apiKey || '',
+          apiSecret: operatorRes.data.operator.apiSecret || '',
+          apiSecretPath: operatorRes.data.operator.apiSecretPath || '',
+        })
         setGames(gamesRes.data.games || [])
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to load operator')
@@ -237,6 +247,37 @@ function EditOperator() {
                 onChange={handleChange}
                 className={inputClass}
               />
+            </div>
+            <div>
+              <label className={labelClass}>API Key</label>
+              <input
+                type="text"
+                value={credentials.apiKey || '—'}
+                readOnly
+                className={readOnlyClass}
+              />
+            </div>
+            <div className="lg:col-span-2">
+              <label className={labelClass}>AWS Secret Path</label>
+              <input
+                type="text"
+                value={credentials.apiSecretPath || '—'}
+                readOnly
+                className={readOnlyClass}
+              />
+              <p className="text-xs text-slate-400 mt-1">
+                Microservices use this path to fetch the API secret from AWS Secrets Manager
+              </p>
+            </div>
+            <div className="lg:col-span-3">
+              <label className={labelClass}>API Secret</label>
+              <input
+                type="text"
+                value={credentials.apiSecret || '—'}
+                readOnly
+                className={readOnlyClass}
+              />
+              <p className="text-xs text-slate-400 mt-1">Value stored in AWS at the path above</p>
             </div>
           </div>
         </div>

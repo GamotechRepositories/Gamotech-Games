@@ -82,12 +82,13 @@ const operatorSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: true,
+      trim: true,
     },
 
-    apiSecret: {
+    apiSecretPath: {
       type: String,
       required: true,
-      select: false,
+      trim: true,
     },
 
     enabledGames: [
