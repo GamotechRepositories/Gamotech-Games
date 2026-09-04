@@ -182,6 +182,45 @@ export const updateOperator = async (req, res) => {
   }
 }
 
+export const getOperatorEnabledGames = async (req, res) => {
+  try {
+    const operatorId = req.params.operatorId?.trim().toUpperCase()
+
+    if (!operatorId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Operator ID is required',
+      })
+    }
+
+    const operator = await Operator.findOne({ operatorId }).populate({
+      path: 'enabledGames',
+      match: { status: 'ACTIVE' },
+      select: '-launchUrl',
+    })
+
+    if (!operator) {
+      return res.status(404).json({
+        success: false,
+        message: 'Operator not found',
+      })
+    }
+
+    const games = (operator.enabledGames || []).filter(Boolean)
+
+    res.status(200).json({
+      success: true,
+      operatorId: operator.operatorId,
+      operatorName: operator.name,
+      operatorStatus: operator.status,
+      count: games.length,
+      games,
+    })
+  } catch (error) {
+    handleError(res, error, 400)
+  }
+}
+
 export const deleteOperator = async (req, res) => {
   try {
     const operator = await Operator.findById(req.params.id)
