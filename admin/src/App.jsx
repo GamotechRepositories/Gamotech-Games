@@ -6,6 +6,9 @@ import Login from './pages/Login'
 import Operators from './pages/Operators'
 import AddOperator from './pages/AddOperator'
 import EditOperator from './pages/EditOperator'
+import OperatorAdapters from './pages/OperatorAdapters'
+import AddOperatorAdapter from './pages/AddOperatorAdapter'
+import EditOperatorAdapter from './pages/EditOperatorAdapter'
 import Games from './pages/Games'
 import AddGame from './pages/AddGame'
 import GameDetails from './pages/GameDetails'
@@ -30,6 +33,9 @@ function App() {
             <Route path="/operators" element={<Operators />} />
             <Route path="/operators/add" element={<AddOperator />} />
             <Route path="/operators/:id/edit" element={<EditOperator />} />
+            <Route path="/operator-adapters" element={<OperatorAdapters />} />
+            <Route path="/operator-adapters/add" element={<AddOperatorAdapter />} />
+            <Route path="/operator-adapters/:operatorId/edit" element={<EditOperatorAdapter />} />
             <Route path="/games" element={<Games />} />
             <Route path="/games/add" element={<AddGame />} />
             <Route path="/games/:id/edit" element={<EditGame />} />

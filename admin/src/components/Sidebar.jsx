@@ -6,6 +6,7 @@ import {
   FileText,
   Gamepad2,
   LayoutDashboard,
+  Plug,
   Settings,
   Shield,
   Users,
@@ -22,6 +23,7 @@ const navSections = [
     title: 'Management',
     items: [
       { label: 'Operators', icon: Building2, to: '/operators' },
+      { label: 'Operator Adapters', icon: Plug, to: '/operator-adapters' },
       { label: 'Games', icon: Gamepad2, to: '/games' },
       { label: 'Players', icon: Users, to: '/players' },
     ],

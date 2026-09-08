@@ -5,6 +5,8 @@ const pageTitles = {
   '/dashboard': 'Dashboard',
   '/operators': 'Operators',
   '/operators/add': 'Add Operator',
+  '/operator-adapters': 'Operator Adapters',
+  '/operator-adapters/add': 'Add Operator Adapter',
   '/games': 'Games',
   '/games/add': 'Add Game',
   '/players': 'Players',
@@ -24,7 +26,11 @@ function Header({ onMenuClick }) {
   const title =
     pageTitles[pathname] ||
     (pathname.endsWith('/edit')
-      ? pathname.startsWith('/operators') ? 'Edit Operator' : 'Edit Game'
+      ? pathname.startsWith('/operator-adapters')
+        ? 'Edit Operator Adapter'
+        : pathname.startsWith('/operators')
+          ? 'Edit Operator'
+          : 'Edit Game'
       : pathname.startsWith('/games/') && pathname !== '/games/add'
         ? 'Game Details'
         : 'Dashboard')
