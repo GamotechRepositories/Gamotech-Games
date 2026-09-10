@@ -49,14 +49,10 @@ function AddOperatorAdapter() {
     setSuccess('')
 
     try {
+      const admin = JSON.parse(localStorage.getItem('admin') || '{}')
       const payload = buildIntegrationPayload({
         ...form,
-        operations: Object.fromEntries(
-          Object.entries(form.operations).map(([key, op]) => [
-            key,
-            { ...op, timeoutMs: Number(op.timeoutMs) },
-          ])
-        ),
+        createdBy: form.createdBy || admin.email || admin.name || '',
       })
       await createIntegration(payload)
       setSuccess('Operator adapter created successfully!')

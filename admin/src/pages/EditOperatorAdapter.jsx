@@ -44,14 +44,10 @@ function EditOperatorAdapter() {
     setSuccess('')
 
     try {
+      const admin = JSON.parse(localStorage.getItem('admin') || '{}')
       const payload = buildIntegrationPayload({
         ...form,
-        operations: Object.fromEntries(
-          Object.entries(form.operations).map(([key, op]) => [
-            key,
-            { ...op, timeoutMs: Number(op.timeoutMs) },
-          ])
-        ),
+        updatedBy: form.updatedBy || admin.email || admin.name || '',
       })
       await updateIntegration(operatorId, payload)
       setSuccess('Operator adapter updated successfully!')
@@ -104,7 +100,7 @@ function EditOperatorAdapter() {
       )}
 
       <form onSubmit={handleSubmit}>
-        <IntegrationForm form={form} onChange={setForm} operatorIdReadOnly />
+        <IntegrationForm form={form} onChange={setForm} operatorIdReadOnly isEdit />
 
         <div className="flex items-center justify-end gap-3 mt-6">
           <Link
