@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Pencil, Plus, Trash2 } from 'lucide-react'
+import { Pencil, Plus, Radio, Trash2 } from 'lucide-react'
 import { deleteGame, getGames } from '../api/axios'
 import ConfirmDialog from '../components/ConfirmDialog'
 import DataTable from '../components/DataTable'
@@ -95,6 +95,13 @@ function Games() {
           className="flex items-center justify-end gap-2"
           onClick={(e) => e.stopPropagation()}
         >
+          <Link
+            to={`/sessions?gameCode=${encodeURIComponent(row.code)}`}
+            title="View sessions"
+            className="p-2 rounded-lg text-emerald-600 hover:bg-emerald-50 border border-transparent hover:border-emerald-200 transition-colors"
+          >
+            <Radio className="w-4 h-4" />
+          </Link>
           <Link
             to={`/games/${row._id}/edit`}
             title="Edit"

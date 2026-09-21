@@ -9,6 +9,7 @@ const pageTitles = {
   '/operator-adapters/add': 'Add Operator Adapter',
   '/games': 'Games',
   '/games/add': 'Add Game',
+  '/sessions': 'Sessions',
   '/players': 'Players',
   '/transactions': 'Transactions',
   '/wallet': 'Wallet',
@@ -31,9 +32,11 @@ function Header({ onMenuClick }) {
         : pathname.startsWith('/operators')
           ? 'Edit Operator'
           : 'Edit Game'
-      : pathname.startsWith('/games/') && pathname !== '/games/add'
-        ? 'Game Details'
-        : 'Dashboard')
+      : pathname.startsWith('/sessions/')
+        ? 'Session Details'
+        : pathname.startsWith('/games/') && pathname !== '/games/add'
+          ? 'Game Details'
+          : 'Dashboard')
 
   const handleLogout = () => {
     localStorage.removeItem('token')

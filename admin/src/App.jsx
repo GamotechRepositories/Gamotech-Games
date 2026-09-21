@@ -13,6 +13,8 @@ import Games from './pages/Games'
 import AddGame from './pages/AddGame'
 import GameDetails from './pages/GameDetails'
 import EditGame from './pages/EditGame'
+import Sessions from './pages/Sessions'
+import SessionDetails from './pages/SessionDetails'
 import Players from './pages/Players'
 import Transactions from './pages/Transactions'
 import Wallet from './pages/Wallet'
@@ -40,6 +42,8 @@ function App() {
             <Route path="/games/add" element={<AddGame />} />
             <Route path="/games/:id/edit" element={<EditGame />} />
             <Route path="/games/:id" element={<GameDetails />} />
+            <Route path="/sessions" element={<Sessions />} />
+            <Route path="/sessions/:sessionId" element={<SessionDetails />} />
             <Route path="/players" element={<Players />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/wallet" element={<Wallet />} />

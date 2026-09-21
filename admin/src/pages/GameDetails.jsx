@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, ExternalLink } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Radio } from 'lucide-react'
 import { getGameById } from '../api/axios'
 import GameImage from '../components/GameImage'
 import LoadingSpinner from '../components/LoadingSpinner'
@@ -80,7 +80,14 @@ function GameDetails() {
               {game.description && (
                 <p className="text-sm text-slate-600 mb-4">{game.description}</p>
               )}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  to={`/sessions?gameCode=${encodeURIComponent(game.code)}`}
+                  className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium hover:bg-emerald-100 transition-colors"
+                >
+                  <Radio className="w-3.5 h-3.5" />
+                  View Sessions
+                </Link>
                 {game.isFeatured && (
                   <span className="text-xs px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-medium">
                     Featured

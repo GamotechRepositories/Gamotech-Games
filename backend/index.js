@@ -6,6 +6,7 @@ import reportRouter from './routes/reportRoute.js'
 import adminRouter from './routes/adminRoute.js'
 import gameRouter from './routes/gameRoute.js'
 import operatorRouter from './routes/operatorRoute.js'
+import sessionRouter from './routes/sessionRoute.js'
 
 dotenv.config()
 
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/games', gameRouter)
 app.use('/api/v1/operators', operatorRouter)
+app.use('/api/v1/sessions', sessionRouter)
 app.use('/api/v1', reportRouter)
 app.use('/api/v1', adminRouter)
 
