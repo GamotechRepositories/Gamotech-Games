@@ -24,3 +24,13 @@ export const parseSessionList = (data) => {
 }
 
 export const parseSession = (data) => data?.session ?? data?.data ?? data
+
+export const parseSessionDetail = (data) => {
+  const session = parseSession(data)
+  const events = data?.events ?? session?.events ?? []
+
+  return {
+    session,
+    events: Array.isArray(events) ? events : [],
+  }
+}
