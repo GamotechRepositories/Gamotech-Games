@@ -9,6 +9,10 @@ function StatusBadge({ status }) {
     Success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     Failed: 'bg-red-50 text-red-700 border-red-200',
     Pending: 'bg-amber-50 text-amber-700 border-amber-200',
+    WIN: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    LOSS: 'bg-red-50 text-red-700 border-red-200',
+    DRAW: 'bg-amber-50 text-amber-700 border-amber-200',
+    UNKNOWN: 'bg-slate-100 text-slate-600 border-slate-200',
   }
 
   return (

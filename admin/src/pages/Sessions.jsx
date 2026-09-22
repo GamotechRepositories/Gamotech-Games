@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { Eye, Search } from 'lucide-react'
+import { BarChart3, Eye, ListTree, Search } from 'lucide-react'
 import { getGames, getOperators } from '../api/axios'
 import { getSessions, parseSessionList, trackSession, parseSession } from '../api/sessions'
 import DataTable from '../components/DataTable'
@@ -206,6 +206,23 @@ function Sessions() {
         title="Sessions"
         description="Monitor active game sessions from the session service"
       />
+
+      <div className="flex flex-wrap gap-2 mb-4">
+        <Link
+          to="/sessions/stats"
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:border-indigo-200 hover:text-indigo-700"
+        >
+          <BarChart3 className="w-4 h-4" />
+          Session Stats
+        </Link>
+        <Link
+          to="/sessions/round-events"
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:border-indigo-200 hover:text-indigo-700"
+        >
+          <ListTree className="w-4 h-4" />
+          Round Events
+        </Link>
+      </div>
 
       <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mb-4">
         <p className="text-sm font-medium text-slate-900 mb-2">Track by session token</p>

@@ -27,6 +27,8 @@ const navSections = [
       { label: 'Operator Adapters', icon: Plug, to: '/operator-adapters' },
       { label: 'Games', icon: Gamepad2, to: '/games' },
       { label: 'Sessions', icon: Radio, to: '/sessions' },
+      { label: 'Session Stats', icon: BarChart3, to: '/sessions/stats' },
+      { label: 'Round Events', icon: FileText, to: '/sessions/round-events' },
       { label: 'Players', icon: Users, to: '/players' },
     ],
   },

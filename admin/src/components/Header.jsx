@@ -10,6 +10,8 @@ const pageTitles = {
   '/games': 'Games',
   '/games/add': 'Add Game',
   '/sessions': 'Sessions',
+  '/sessions/stats': 'Session Stats',
+  '/sessions/round-events': 'Round Events',
   '/players': 'Players',
   '/transactions': 'Transactions',
   '/wallet': 'Wallet',

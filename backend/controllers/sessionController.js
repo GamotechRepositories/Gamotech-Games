@@ -1,5 +1,9 @@
 import {
+  getEventsByGame as fetchEventsByGame,
+  getEventsByOperator as fetchEventsByOperator,
   getSessionById as fetchSessionById,
+  getStatsByGame as fetchStatsByGame,
+  getStatsByOperator as fetchStatsByOperator,
   listSessions as fetchSessions,
   trackSessionByToken,
 } from '../services/sessionApi.js'
@@ -26,18 +30,27 @@ const ensureConfigured = (res) => {
   return true
 }
 
+const pickQuery = (query, keys) => {
+  const params = {}
+  for (const key of keys) {
+    if (query[key] !== undefined && query[key] !== '') {
+      params[key] = query[key]
+    }
+  }
+  return params
+}
+
 export const listSessions = async (req, res) => {
   if (!ensureConfigured(res)) return
 
   try {
-    const { page, limit, operatorId, status, gameCode } = req.query
-    const params = {}
-    if (page) params.page = page
-    if (limit) params.limit = limit
-    if (operatorId) params.operatorId = operatorId
-    if (status) params.status = status
-    if (gameCode) params.gameCode = gameCode
-
+    const params = pickQuery(req.query, [
+      'page',
+      'limit',
+      'operatorId',
+      'status',
+      'gameCode',
+    ])
     const { data } = await fetchSessions(params)
     res.status(200).json(data)
   } catch (error) {
@@ -58,6 +71,98 @@ export const trackSession = async (req, res) => {
     }
 
     const { data } = await trackSessionByToken(sessionToken)
+    res.status(200).json(data)
+  } catch (error) {
+    forwardError(res, error)
+  }
+}
+
+export const getStatsByOperator = async (req, res) => {
+  if (!ensureConfigured(res)) return
+
+  try {
+    const params = pickQuery(req.query, ['operatorId', 'gameCode', 'from', 'to'])
+    if (!params.operatorId) {
+      return res.status(400).json({
+        success: false,
+        message: 'operatorId query parameter is required',
+      })
+    }
+
+    const { data } = await fetchStatsByOperator(params)
+    res.status(200).json(data)
+  } catch (error) {
+    forwardError(res, error)
+  }
+}
+
+export const getStatsByGame = async (req, res) => {
+  if (!ensureConfigured(res)) return
+
+  try {
+    const params = pickQuery(req.query, ['gameCode', 'operatorId', 'from', 'to'])
+    if (!params.gameCode) {
+      return res.status(400).json({
+        success: false,
+        message: 'gameCode query parameter is required',
+      })
+    }
+
+    const { data } = await fetchStatsByGame(params)
+    res.status(200).json(data)
+  } catch (error) {
+    forwardError(res, error)
+  }
+}
+
+export const getEventsByOperator = async (req, res) => {
+  if (!ensureConfigured(res)) return
+
+  try {
+    const params = pickQuery(req.query, [
+      'operatorId',
+      'gameCode',
+      'from',
+      'to',
+      'result',
+      'page',
+      'limit',
+    ])
+    if (!params.operatorId) {
+      return res.status(400).json({
+        success: false,
+        message: 'operatorId query parameter is required',
+      })
+    }
+
+    const { data } = await fetchEventsByOperator(params)
+    res.status(200).json(data)
+  } catch (error) {
+    forwardError(res, error)
+  }
+}
+
+export const getEventsByGame = async (req, res) => {
+  if (!ensureConfigured(res)) return
+
+  try {
+    const params = pickQuery(req.query, [
+      'gameCode',
+      'operatorId',
+      'from',
+      'to',
+      'result',
+      'page',
+      'limit',
+    ])
+    if (!params.gameCode) {
+      return res.status(400).json({
+        success: false,
+        message: 'gameCode query parameter is required',
+      })
+    }
+
+    const { data } = await fetchEventsByGame(params)
     res.status(200).json(data)
   } catch (error) {
     forwardError(res, error)

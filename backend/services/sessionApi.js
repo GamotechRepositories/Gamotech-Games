@@ -27,4 +27,16 @@ export const trackSessionByToken = (sessionToken) =>
 export const getSessionById = (sessionId) =>
   sessionApi.get(`/api/v1/admin/sessions/${sessionId}`)
 
+export const getStatsByOperator = (params) =>
+  sessionApi.get('/api/v1/admin/sessions/stats/by-operator', { params })
+
+export const getStatsByGame = (params) =>
+  sessionApi.get('/api/v1/admin/sessions/stats/by-game', { params })
+
+export const getEventsByOperator = (params) =>
+  sessionApi.get('/api/v1/admin/sessions/events/by-operator', { params })
+
+export const getEventsByGame = (params) =>
+  sessionApi.get('/api/v1/admin/sessions/events/by-game', { params })
+
 export default sessionApi
