@@ -3,6 +3,7 @@ import {
   listSessions as fetchSessions,
   trackSessionByToken,
 } from '../services/sessionApi.js'
+import { isSessionAdminKeyConfigured } from '../utils/sessionAdminKey.js'
 
 const forwardError = (res, error) => {
   const status = error.response?.status || 500
@@ -14,10 +15,11 @@ const forwardError = (res, error) => {
 }
 
 const ensureConfigured = (res) => {
-  if (!process.env.SESSION_ADMIN_KEY) {
+  if (!isSessionAdminKeyConfigured()) {
     res.status(503).json({
       success: false,
-      message: 'Session service is not configured. Set SESSION_ADMIN_KEY in backend/.env',
+      message:
+        'Session service is not configured. Set ADMIN_API_KEY in backend/.env to the same value as Session Service ADMIN_API_KEY.',
     })
     return false
   }

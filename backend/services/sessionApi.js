@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getSessionAdminKey } from '../utils/sessionAdminKey.js'
 
 const sessionApi = axios.create({
   baseURL: process.env.SESSION_API_URL || 'https://api.dpbossking.com',
@@ -8,7 +9,7 @@ const sessionApi = axios.create({
 })
 
 sessionApi.interceptors.request.use((config) => {
-  const adminKey = process.env.SESSION_ADMIN_KEY
+  const adminKey = getSessionAdminKey()
   if (adminKey) {
     config.headers['X-Admin-Key'] = adminKey
   }
