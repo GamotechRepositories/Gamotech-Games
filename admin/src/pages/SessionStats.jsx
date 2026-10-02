@@ -1,6 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, BarChart3, Users } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  BarChart3,
+  CreditCard,
+  DollarSign,
+  MinusCircle,
+  RotateCcw,
+  TrendingDown,
+  TrendingUp,
+  Users,
+} from 'lucide-react'
 import { getGames, getOperators } from '../api/axios'
 import {
   formatCurrency,
@@ -11,25 +22,22 @@ import DataTable from '../components/DataTable'
 import LoadingSpinner from '../components/LoadingSpinner'
 import PageHeader from '../components/PageHeader'
 import SessionReportFilters from '../components/SessionReportFilters'
+import StatCard from '../components/StatCard'
 
 const MODES = [
   { id: 'operator', label: 'By Operator' },
   { id: 'game', label: 'By Game' },
 ]
 
-function SummaryCard({ label, value, tone = 'default' }) {
-  const toneClass =
-    tone === 'win'
-      ? 'text-emerald-600'
-      : tone === 'loss'
-        ? 'text-red-600'
-        : 'text-slate-900'
-
+function SummaryCard({ label, value, tone = 'default', icon, color }) {
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-      <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">{label}</p>
-      <p className={`mt-2 text-2xl font-bold ${toneClass}`}>{value}</p>
-    </div>
+    <StatCard
+      label={label}
+      value={value}
+      tone={tone}
+      icon={icon}
+      color={color || (tone === 'win' ? '#059669' : tone === 'loss' ? '#dc2626' : '#6366f1')}
+    />
   )
 }
 
@@ -234,20 +242,22 @@ function SessionStats() {
       ) : loaded && summary ? (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-            <SummaryCard label="Total Rounds" value={summary.totalRounds ?? 0} />
-            <SummaryCard label="Wins" value={summary.wins ?? 0} tone="win" />
-            <SummaryCard label="Losses" value={summary.losses ?? 0} tone="loss" />
+            <SummaryCard label="Total Rounds" value={summary.totalRounds ?? 0} icon={RotateCcw} color="#6366f1" />
+            <SummaryCard label="Wins" value={summary.wins ?? 0} tone="win" icon={TrendingUp} color="#059669" />
+            <SummaryCard label="Losses" value={summary.losses ?? 0} tone="loss" icon={TrendingDown} color="#dc2626" />
             <SummaryCard
               label="Net (Payout − Bet)"
               value={formatCurrency(netOverall)}
               tone={netOverall > 0 ? 'win' : netOverall < 0 ? 'loss' : 'default'}
+              icon={DollarSign}
+              color={netOverall >= 0 ? '#059669' : '#dc2626'}
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <SummaryCard label="Total Bet" value={formatCurrency(summary.totalBet)} />
-            <SummaryCard label="Total Payout" value={formatCurrency(summary.totalPayout)} />
-            <SummaryCard label="Draws / Unknown" value={`${summary.draws ?? 0} / ${summary.unknown ?? 0}`} />
+            <SummaryCard label="Total Bet" value={formatCurrency(summary.totalBet)} icon={CreditCard} color="#4f46e5" />
+            <SummaryCard label="Total Payout" value={formatCurrency(summary.totalPayout)} icon={ArrowUpRight} color="#059669" />
+            <SummaryCard label="Draws / Unknown" value={`${summary.draws ?? 0} / ${summary.unknown ?? 0}`} icon={MinusCircle} color="#d97706" />
           </div>
 
           <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">

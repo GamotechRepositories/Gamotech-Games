@@ -5,6 +5,7 @@ import PageHeader from '../components/PageHeader'
 import DataTable from '../components/DataTable'
 import LoadingSpinner from '../components/LoadingSpinner'
 import StatusBadge from '../components/StatusBadge'
+import StatCard from '../components/StatCard'
 
 const formatCurrency = (n) => `₹${n.toLocaleString('en-IN')}`
 
@@ -72,20 +73,14 @@ function Wallet() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
         {summaryConfig.map((item) => (
-          <div key={item.key} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-            <div className="flex items-center justify-between mb-3">
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: `${item.color}15` }}
-              >
-                <item.icon className="w-5 h-5" style={{ color: item.color }} />
-              </div>
-            </div>
-            <p className="text-2xl font-bold text-slate-900">
-              {item.isCount ? summary?.[item.key] ?? 0 : formatCurrency(summary?.[item.key] ?? 0)}
-            </p>
-            <p className="text-sm text-slate-500 mt-1">{item.label}</p>
-          </div>
+          <StatCard
+            key={item.key}
+            title={item.label}
+            value={item.isCount ? (summary?.[item.key] ?? 0) : formatCurrency(summary?.[item.key] ?? 0)}
+            trend={summary?.trends?.[item.key]}
+            icon={item.icon}
+            color={item.color}
+          />
         ))}
       </div>
 

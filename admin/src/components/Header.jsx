@@ -1,4 +1,4 @@
-import { Bell, Calendar, LogOut, Menu, Search } from 'lucide-react'
+import { Bell, Calendar, Gamepad2, LogOut, Menu, Search } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 const pageTitles = {
@@ -47,57 +47,58 @@ function Header({ onMenuClick }) {
   }
 
   return (
-    <header className="h-16 border-b border-slate-200 bg-white flex items-center justify-between px-6 shrink-0 shadow-sm">
+    <header className="h-16 border-b border-blue-900/50 bg-[#172554] flex items-center justify-between px-6 shrink-0 shadow-sm text-white relative z-50">
       <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
-          className="lg:hidden p-2 rounded-lg hover:bg-slate-100 text-slate-500"
+          className="lg:hidden p-2 rounded-lg hover:bg-white/10 text-slate-200 hover:text-white transition-colors"
+          title="Toggle Navigation"
         >
           <Menu className="w-5 h-5" />
         </button>
-        <h1 className="text-lg font-semibold text-slate-900">{title}</h1>
-      </div>
 
-      <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
-        <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 pl-10 pr-16 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-          />
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">
-            /
-          </span>
+        {/* Brand */}
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center shadow-xs">
+            <Gamepad2 className="w-5 h-5 text-white" />
+          </div>
+          <div className="hidden sm:block">
+            <p className="text-sm font-semibold text-white leading-tight">Game Provider</p>
+            <p className="text-xs text-blue-200/70">Admin Panel</p>
+          </div>
         </div>
+
+        {/* <div className="hidden md:block h-6 w-px bg-blue-800/80 mx-1" /> */}
+        {/* <h1 className="text-lg font-semibold text-white tracking-tight">{title}</h1> */}
       </div>
 
+      
       <div className="flex items-center gap-4">
-        <button className="relative p-2 rounded-lg hover:bg-slate-100 text-slate-500">
+        <button className="relative p-2 rounded-lg hover:bg-white/10 text-slate-200 hover:text-white transition-colors">
           <Bell className="w-5 h-5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-[#172554]" />
         </button>
 
-        <div className="hidden sm:flex items-center gap-2 text-sm text-slate-500 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
-          <Calendar className="w-4 h-4" />
+        <div className="hidden sm:flex items-center gap-2 text-sm text-slate-200 bg-white/10 border border-white/15 rounded-xl px-3 py-2">
+          <Calendar className="w-4 h-4 text-slate-300" />
           <span>
             {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
           </span>
         </div>
 
-        <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
-          <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-sm font-medium text-white">
+        <div className="flex items-center gap-3 pl-4 border-l border-white/15">
+          <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-sm font-medium text-white shadow-xs">
             {admin.name?.charAt(0)?.toUpperCase() || 'A'}
           </div>
           <div className="hidden sm:block">
-            <p className="text-sm font-medium text-slate-900 leading-tight">
+            <p className="text-sm font-medium text-white leading-tight">
               {admin.name || 'Admin'}
             </p>
-            <p className="text-xs text-slate-500">Super Admin</p>
+            <p className="text-xs text-slate-300">Super Admin</p>
           </div>
           <button
             onClick={handleLogout}
-            className="p-2 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-red-600 transition-colors"
+            className="p-2 rounded-lg text-slate-300 hover:text-red-300 hover:bg-white/10 transition-colors"
             title="Logout"
           >
             <LogOut className="w-4 h-4" />
