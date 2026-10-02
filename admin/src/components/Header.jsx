@@ -1,5 +1,6 @@
-import { Bell, Calendar, Gamepad2, LogOut, Menu, Search } from 'lucide-react'
+import { Bell, Calendar, LogOut, Menu, Search } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import orengLogo from '../assets/orengelogo-.png'
 
 const pageTitles = {
   '/dashboard': 'Dashboard',
@@ -58,14 +59,12 @@ function Header({ onMenuClick }) {
         </button>
 
         {/* Brand */}
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center shadow-xs">
-            <Gamepad2 className="w-5 h-5 text-white" />
-          </div>
-          <div className="hidden sm:block">
-            <p className="text-sm font-semibold text-white leading-tight">Game Provider</p>
-            <p className="text-xs text-blue-200/70">Admin Panel</p>
-          </div>
+        <div className="flex items-center gap-2.5">
+          <img
+            src={orengLogo}
+            alt="Oreng"
+            className="h-10 sm:h-11 md:h-12 w-auto object-contain"
+          />
         </div>
 
         {/* <div className="hidden md:block h-6 w-px bg-blue-800/80 mx-1" /> */}
